@@ -1,29 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-	"time"
 )
 
+func RootHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("you just reached the main route."))
+}
+
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	})
-
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("You just reached the main route.\n"))
-	})
-
-	server := &http.Server{
-		Addr:         ":8080",
-		Handler:      mux,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		IdleTimeout:  120 * time.Second,
-	}
-
-	log.Fatal(server.ListenAndServe())
+	http.HandleFunc("/", RootHandler)
+	fmt.Println("Server running on localhost:8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
