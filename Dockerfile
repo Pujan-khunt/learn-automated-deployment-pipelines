@@ -1,5 +1,5 @@
 # Base image for build stage.
-FROM golang:1.25 as build
+FROM golang:1.25.2 as build
 
 # Set the working directory for the build stage.
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY . .
 RUN CGO_ENABLED=0 go build -v -o /app/go-api
 
 # Using a simple image for the final stage.
-FROM alpine:latest
+FROM alpine:3.18
 
 # Create a non-root user to run the application.
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup # All in one line to reduce layers
